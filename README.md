@@ -16,8 +16,8 @@ By keeping this README up-to-date,
 your team will find it easier to prepare for the final presentation
 at the end of the term.
 
-# User Stories (For each group member):
+## User Stories (For each group member):
 
-# Ema: As a student, I want to generate flashcards in a timely manner so that I could study for my classes 
+ **Ema:** As a student, I want to generate flashcards in a timely manner so that I could study for my classes 
 
 # Use Cases:
