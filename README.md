@@ -19,6 +19,7 @@ at the end of the term.
 ## User Stories (For each group member):
 
  **Ema:** As a student, I want to generate flashcards in a timely manner so that I could study for my classes 
+ 
  **Grace:** As a student, I want to start a focus timer so that I can study without any distractions 
 
 # Use Cases:
