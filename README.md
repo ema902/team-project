@@ -22,6 +22,6 @@ at the end of the term.
  
  **Grace:** As a student, I want to start a focus timer so that I can study without any distractions 
 
- **Ava:** As a student, I want to start a break timer so that I can take periodic breaks after studying. As a student, I want to play a game during my break so that I can wind down and relax after my study session. 
+ **Ava and Miray:** As a student, I want to start a break timer so that I can take periodic breaks after studying. As a student, I want to play a game during my break so that I can wind down and relax after my study session. 
 
 # Use Cases:
