@@ -44,6 +44,9 @@ As a student, I want to start a break timer so that I can take periodic breaks a
 ### User Story 4 - Miray:
 As a student, I want to play a game during my break so that I can wind down and relax after my study session. 
 
+### User Story 5 - Sophia:
+As a student, I want to review my flashcards so I can remember the material. 
+
 ## Use Cases
 ### Use Case 1
 ### Use Case 2
