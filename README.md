@@ -40,6 +40,7 @@ As a student, I want to start a focus timer so that I can study without any dist
 
 ### User Story 3 - Ava:
 As a student, I want to start a break timer so that I can take periodic breaks after studying. 
+As a student playing the break game, I want to receive feedback on my submitted code so that I figure out the secret code. 
 
 ### User Story 4 - Miray:
 As a student, I want to play a game during my break so that I can wind down and relax after my study session. 
