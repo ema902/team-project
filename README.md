@@ -51,6 +51,30 @@ As a student, I want to review my flashcards so I can remember the material.
 ## Use Cases
 ### Use Case 1
 ### Use Case 2
+### Use Case 3 
+Name: Evaluate Guess and Generate Feedback 
+Primary Actor: Student
+Preconditions: Student is playing CandleGame, Break Timer is still ongoing
+Trigger: The student enters a guess and clicks the submit button.
+Success Outcome: The student's guess is checked with secret code, candle feedback is generated for each guessed digit, game condition and guess are updated, and the candle feedback is displayed to student.
+Main Success Scenario:
+1. Student enters 5 digit guessed code in game and displayed in real time
+2. Student submits the code via Submit button. (Invalid inputs are ignored and not written)
+3. The system receives the guessed code.
+4. The system compares the guessed code to secret code.
+5. The system then generates candle colour feedback based on the placement and correctness of each digit (Unlit: Digit not in secret code, Yellow: Digit is in secret code but in wrong place, Orange: Digit is in secret code and in the right place)
+6. The system records the guess and feedback.
+7. The system checks game conditions (Win, Loss, Ongoing) and updates it.
+8. The system uses feedback to display the candle colours, remaining attempts, and status to the student.
+Extensions: Student guesses the secret code correctly
+1. The system updates the game condition to WON 
+2. The system displays a winning message and displays candle colours to the student.
+3. The student can quit the game and return to break screen.
+Student's guess is invalid 
+1. The system detects that the guess has invalid characters.
+2. The submit button is disabled until a valid guess is detected. 
+### Use Case 4 
+### Use Case 5   
 
 ---
 ## Minimal Viable Product (MVP)
