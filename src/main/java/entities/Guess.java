@@ -9,12 +9,12 @@ import java.util.List;
 
 public class Guess {
     private final String guessedCode;  // holds the guessed code
-    private final List<CandleType> feedback; // holds the feedbacks of the guessed code
+    //private final List<CandleType> feedback; // holds the feedbacks of the guessed code
 
 
     public Guess(String guessedCode, List<CandleType> feedback) {
         this.guessedCode = guessedCode;
-        this.feedback = List<CandleType> feedback;
+        //this.feedback = List<CandleType> feedback;
     }
 
     /**
@@ -32,7 +32,7 @@ public class Guess {
      *
      * @return the feedback list.
      */
-    public List<CandleType> getFeedback() {
-        return feedback;
-    }
+    //public List<CandleType> getFeedback() {
+        //return feedback;
+    //}
 }

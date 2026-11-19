@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapters.home.HomeState;
 import interface_adapters.update_timer_settings.UpdateTimerSettingsController;
 import interface_adapters.update_timer_settings.TimerSettingsViewModel;
 import interface_adapters.update_timer_settings.TimerSettingsViewModelListener;
@@ -18,7 +19,7 @@ import java.io.IOException;
  */
 public class TimerSettingsView extends JPanel implements TimerSettingsViewModelListener {
 
-    private TimerSettingsViewModel viewModel;
+    private final TimerSettingsViewModel viewModel;
     private UpdateTimerSettingsController controller = null;
     private final JFrame settingsFrame = new JFrame();
 
@@ -134,16 +135,17 @@ public class TimerSettingsView extends JPanel implements TimerSettingsViewModelL
      */
     @Override
     public void stateChanged() {
-        if (viewModel.getState().getSettingsOpen()) {
-            this.showWindow();
-        } else if (viewModel.getState().getErrorMessage() != null) {
+        if (viewModel.getState().getErrorMessage() != null) {
             JOptionPane.showMessageDialog(
                     settingsFrame,
                     viewModel.getState().getErrorMessage(),
                     "Invalid Input",
                     JOptionPane.ERROR_MESSAGE
             );
-        } else {
+            viewModel.getState().setErrorMessage(null);
+        } else if (viewModel.getState().getSettingsOpen()){
+            this.showWindow();
+        }else {
             settingsFrame.setVisible(false);
         }
     }
