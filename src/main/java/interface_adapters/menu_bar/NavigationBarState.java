@@ -6,6 +6,7 @@ package interface_adapters.menu_bar;
 public class NavigationBarState {
     private String currentViewName = "";
     private boolean isTimerRunning = false;
+    private String sessionType = "focus";
 
     /**
      * Returns the name of the current view being displayed.
@@ -33,5 +34,21 @@ public class NavigationBarState {
      */
     public void setTimerRunning(boolean timerRunning) {
         isTimerRunning = timerRunning;
+    }
+
+    /**
+     * Returns the current timer's session type.
+     * @return "focus" or "break"
+     */
+    public String getSessionType() {
+        return sessionType;
+    }
+
+    /**
+     * Updates the timer's session type.
+     * @param sessionType "focus" or "break"
+     */
+    public void setSessionType(String sessionType) {
+        this.sessionType = sessionType;
     }
 }

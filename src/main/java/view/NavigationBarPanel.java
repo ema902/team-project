@@ -19,7 +19,7 @@ public class NavigationBarPanel extends JPanel implements NavigationBarViewModel
 
     private final JLabel pageTitleLabel;
     private JMenuItem gameMenuItem;
-    private JMenuItem focusMenuItem;
+    private JMenuItem homeMenuItem;
     private JMenuItem makeFlashcardsMenuItem;
     private JMenuItem studyFlashcardsMenuItem;
 
@@ -85,13 +85,13 @@ public class NavigationBarPanel extends JPanel implements NavigationBarViewModel
         ));
 
         // Create a menu item for each application view.
-        focusMenuItem = buildMenuItem("Focus", ViewNames.HOME);
+        homeMenuItem = buildMenuItem("Home", ViewNames.HOME);
         makeFlashcardsMenuItem = buildMenuItem("Make Flashcards", ViewNames.MAKE_FLASHCARDS);
         studyFlashcardsMenuItem = buildMenuItem("Study Flashcards", ViewNames.STUDY_FLASHCARDS);
         gameMenuItem = buildMenuItem("Game", ViewNames.GAME);
 
         // Add the menu items to the popup menu.
-        popup.add(focusMenuItem);
+        popup.add(homeMenuItem);
         popup.add(makeFlashcardsMenuItem);
         popup.add(studyFlashcardsMenuItem);
         popup.add(gameMenuItem);
@@ -127,11 +127,17 @@ public class NavigationBarPanel extends JPanel implements NavigationBarViewModel
     public void stateChanged() {
         String currentView = navigationBarViewModel.getState().getCurrentViewName();
         boolean isTimerRunning = navigationBarViewModel.getState().isTimerRunning();
+        String sessionType = navigationBarViewModel.getState().getSessionType();
 
         // Update the page title based on the currently displayed view.
         switch(currentView) {
             case ViewNames.HOME:
-                pageTitleLabel.setText("Focus");
+                // Displays the current session type when the Home View is active.
+                if (sessionType.equals("focus")) {
+                    pageTitleLabel.setText("Focus");
+                } else {
+                    pageTitleLabel.setText("Break");
+                }
                 break;
             case ViewNames.MAKE_FLASHCARDS:
                 pageTitleLabel.setText("Make Flashcards");
@@ -147,12 +153,14 @@ public class NavigationBarPanel extends JPanel implements NavigationBarViewModel
         }
 
         // Hide the menu item for the current view.
-        focusMenuItem.setVisible(!ViewNames.HOME.equals(currentView));
+        homeMenuItem.setVisible(!ViewNames.HOME.equals(currentView));
         makeFlashcardsMenuItem.setVisible(!ViewNames.MAKE_FLASHCARDS.equals(currentView));
         studyFlashcardsMenuItem.setVisible(!ViewNames.STUDY_FLASHCARDS.equals(currentView));
 
-        // Hide the Game option while the timer is running or when already on the Game view.
-        gameMenuItem.setVisible(!isTimerRunning && !ViewNames.GAME.equals(currentView));
+        // Hide the Game option while the Focus timer is running.
+        // Allows the Game page to be accessed during the break session.
+        gameMenuItem.setVisible((!isTimerRunning || sessionType.equals("break"))
+                && !ViewNames.GAME.equals(currentView));
     }
 
 }
