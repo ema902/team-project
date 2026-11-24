@@ -14,6 +14,10 @@ public class FlashcardStudyingInteractor implements FlashcardStudyingInputBounda
         this.dao = dao;
     }
 
+    public Deck getCurrentDeck() {
+        return currentDeck;
+    }
+
     public void execute(FlashcardStudyingInputData inputData) {
         // check if user inputted a new deck
         if (inputData.getDeckTitle() != null) {

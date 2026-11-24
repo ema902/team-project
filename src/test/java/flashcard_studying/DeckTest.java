@@ -1,10 +1,10 @@
+package flashcard_studying;
+
 import entities.Deck;
 import entities.Card;
 
 
 import org.junit.Test;
-
-import java.util.List;
 
 import java.util.ArrayList;
 
