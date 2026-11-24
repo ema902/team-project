@@ -49,4 +49,21 @@ public class DeckTest {
         assertNotEquals(c1.getQuestion(), c2.getQuestion());
     }
 
+    // tests whether getCard continuously updates currentCard
+    // and returns null when the deck has been exhausted
+    @Test
+    public void testGetCardIterateUntilEmpty() {
+        for (int i = 0; i<3; i++) {
+            exampleList.add(new Card(testQuestions[i], testAnswers[i]));
+        }
+        Deck d = new Deck("title", exampleList);
+        for (int i = 0; i<3; i++) {
+            Card c = d.getCard();
+            assertEquals(c.getQuestion(), d.getCurrentCard().getQuestion());
+            d.removeCurrentCard();
+        }
+
+        assertNull(d.getCard());
+    }
+
 }
