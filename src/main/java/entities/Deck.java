@@ -28,7 +28,7 @@ public class Deck {
 
     public Card getCard() {
         // if we've finished the deck, stop
-        if (studyingDeck == null) {
+        if (studying && studyingDeck == null) {
             stopStudying();
             return null;
         }
