@@ -14,6 +14,8 @@ import static org.junit.Assert.*;
 
 public class FlashcardStudyingInteractorTest {
 
+    public static String[] testQuestions = {"a", "b", "c", "d", "e", "f", "g", "h", "i"};
+    public static String[] testAnswers = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
     private static class OutputRecorder implements FlashcardStudyingOutputBoundary {
         public FlashcardStudyingOutputData success;
         public String failure;
@@ -39,8 +41,7 @@ public class FlashcardStudyingInteractorTest {
 
         @Override
         public Deck loadDeck(String deckID) {
-            String[] testQuestions = {"a", "b", "c", "d", "e", "f", "g", "h", "i"};
-            String[] testAnswers = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+
             ArrayList<Card> exampleList1 = new ArrayList<>();
             for (int i = 0; i < 4; i++) {
                 Card c = new Card(testQuestions[i], testAnswers[i]);
@@ -89,5 +90,44 @@ public class FlashcardStudyingInteractorTest {
         assertNotNull(recorder.failure);
         assertEquals(recorder.failure, "Invalid deck title");
 
+    }
+    // test that current deck is correctly assigned when deck title is valid
+    @Test
+    public void inDAO() {
+        FlashcardStudyingInputData inputData = new FlashcardStudyingInputData("Start", "deck1");
+        FlashcardDataAccessInterface userRepository = new FakeDAO();
+        OutputRecorder recorder = new OutputRecorder();
+
+        FlashcardStudyingInteractor interactor = new FlashcardStudyingInteractor(recorder, userRepository);
+        interactor.execute(inputData);
+        // should return a valid question (not an answer)
+        assertNotNull(recorder.success);
+        assertTrue(inTestQuestions(recorder.success.getText()));
+        // should assign a currentDeck to interactor
+        assertEquals(interactor.getCurrentDeck().getTitle(), "deck1");
+        assertTrue(interactor.getCurrentDeck().getStudying());
+
+    }
+
+    // test that flip successfully flips to answer side
+    // but when you call on the card again, it shows the answer side first
+    @Test
+    public void flipAndShowQuestionTest() {
+        FlashcardStudyingInputData inputData = new FlashcardStudyingInputData("Start", "deck1");
+        FlashcardDataAccessInterface userRepository = new FakeDAO();
+        OutputRecorder recorder = new OutputRecorder();
+
+        FlashcardStudyingInteractor interactor = new FlashcardStudyingInteractor(recorder, userRepository);
+        interactor.execute(inputData);
+
+
+    }
+
+    private boolean inTestQuestions(String question) {
+        ArrayList<String> example = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            example.add(testQuestions[i]);
+        }
+        return example.contains(question);
     }
 }
