@@ -71,8 +71,16 @@ public class StartTimerInteractor implements StartTimerInputBoundary{
                     dataAccess.setTimerRunning(false);
                     timer.cancel();
 
+                    // Gets the duration of the next session from the Data Access Object.
+                    int nextDuration;
+                    if(inputData.getSessionType().equals("focus")) {
+                        nextDuration = dataAccess.getBreakDuration();
+                    } else {
+                        nextDuration = dataAccess.getFocusDuration();
+                    }
+
                     // Prepares the view when the timer is finished
-                    presenter.prepareTimerFinishedView();
+                    presenter.prepareTimerFinishedView(inputData.getSessionType(), nextDuration);
                 }
             }
         }, 1000, 1000);
