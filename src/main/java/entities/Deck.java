@@ -66,4 +66,5 @@ public class Deck {
     public String getTitle(){return this.title;}
     public ArrayList<Card> getFlashcardDeck(){ return this.flashcardDeck;}
     public void setTitle(String title){ this.title = title;}
+    public boolean getStudying() { return studying;}
 }
