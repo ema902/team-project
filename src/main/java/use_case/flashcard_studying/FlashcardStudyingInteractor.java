@@ -22,9 +22,11 @@ public class FlashcardStudyingInteractor implements FlashcardStudyingInputBounda
                 currentDeck = dao.loadDeck(inputData.getDeckTitle());
             } catch (IllegalStateException e) {
                 presenter.prepareFailView("Invalid deck title");
+                return;
             }
         } else if (currentDeck == null) {
             presenter.prepareFailView("You need to input a deck title");
+            return;
         }
         // currentDeck is not null
         // execute buttonClicks then
@@ -34,11 +36,11 @@ public class FlashcardStudyingInteractor implements FlashcardStudyingInputBounda
             presenter.prepareSuccessView(new FlashcardStudyingOutputData(currentCard.getText()));
         } else if (inputData.getButtonClicked().equals("Still learning")) {
             Card currentCard = currentDeck.getCard();
-            presenter.prepareSuccessView(new FlashcardStudyingOutputData(currentCard.getText()));
+            presenter.prepareSuccessView(new FlashcardStudyingOutputData(currentCard.getQuestion()));
         } else if (inputData.getButtonClicked().equals("Knew it")) {
             currentDeck.removeCurrentCard();
             Card currentCard = currentDeck.getCard();
-            presenter.prepareSuccessView(new FlashcardStudyingOutputData(currentCard.getText()));
+            presenter.prepareSuccessView(new FlashcardStudyingOutputData(currentCard.getQuestion()));
         }
 
     }
