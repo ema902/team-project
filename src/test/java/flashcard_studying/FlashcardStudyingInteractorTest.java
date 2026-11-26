@@ -93,7 +93,7 @@ public class FlashcardStudyingInteractorTest {
         assertEquals(recorder.failure, "You need to input a deck title");
 
     }
-    // test for failure when you input a deck title and it's not in the DAO
+    // test for failure when you press start, input a deck title and it's not in the DAO
     @Test
     public void notInDAO() {
         FlashcardStudyingInputData inputData = new FlashcardStudyingInputData("Start", "X");
@@ -117,7 +117,7 @@ public class FlashcardStudyingInteractorTest {
         interactor.execute(inputData);
         // should return a valid question (not an answer)
         assertNotNull(recorder.success);
-        assertTrue(inTestQuestions(recorder.success.getText()));
+        assertTrue(inTestQuestions2(recorder.success.getText()));
         // should assign a currentDeck to interactor
         assertEquals(interactor.getCurrentDeck().getTitle(), "deck2");
         assertTrue(interactor.getCurrentDeck().getStudying());
@@ -135,12 +135,12 @@ public class FlashcardStudyingInteractorTest {
         FlashcardStudyingInteractor interactor = new FlashcardStudyingInteractor(recorder, userRepository);
         interactor.execute(inputData);
         assertNotNull(recorder.success);
-        assertTrue(inTestQuestions(recorder.success.getText()));
+        assertTrue(inTestQuestions2(recorder.success.getText()));
 
         FlashcardStudyingInputData inputData2 = new FlashcardStudyingInputData("Flip");
         interactor.execute(inputData2);
         assertNotNull(recorder.success);
-        assertTrue(inTestAnswers(recorder.success.getText()));
+        assertTrue(inTestAnswers2(recorder.success.getText()));
         // get a new card
         FlashcardStudyingInputData inputData3 = new FlashcardStudyingInputData("Still learning");
         interactor.execute(inputData3);
@@ -148,7 +148,7 @@ public class FlashcardStudyingInteractorTest {
         FlashcardStudyingInputData inputData4 = new FlashcardStudyingInputData("Still learning");
         interactor.execute(inputData4);
         assertNotNull(recorder.success);
-        assertTrue(inTestQuestions(recorder.success.getText()));
+        assertTrue(inTestQuestions2(recorder.success.getText()));
 
     }
 
@@ -162,10 +162,28 @@ public class FlashcardStudyingInteractorTest {
         FlashcardStudyingInteractor interactor = new FlashcardStudyingInteractor(recorder, userRepository);
         interactor.execute(inputData);
         assertNotNull(recorder.success);
-        assertTrue(inTestQuestions(recorder.success.getText()));
+
+        FlashcardStudyingInputData inputData2 = new FlashcardStudyingInputData("Knew it");
+        interactor.execute(inputData2);
+        assertNotNull(recorder.success);
+        assertTrue(inTestQuestions1(recorder.success.getText()));
+
+        FlashcardStudyingInputData inputData3 = new FlashcardStudyingInputData("Knew it");
+        interactor.execute(inputData3);
+        assertNotNull(recorder.success);
+        assertTrue(inTestQuestions1(recorder.success.getText()));
+
+        FlashcardStudyingInputData inputData4 = new FlashcardStudyingInputData("Knew it");
+        interactor.execute(inputData4);
+        assertNotNull(recorder.success);
+        assertTrue(inTestQuestions1(recorder.success.getText()));
+        // at the end of the deck, should return error message
+        FlashcardStudyingInputData inputData5 = new FlashcardStudyingInputData("Knew it");
+        interactor.execute(inputData5);
+        assertEquals(recorder.failure, "All done!");
     }
 
-    private boolean inTestQuestions(String question) {
+    private boolean inTestQuestions2(String question) {
         ArrayList<String> example = new ArrayList<>();
         for (int i = 4; i < 6; i++) {
             example.add(testQuestions[i]);
@@ -173,9 +191,25 @@ public class FlashcardStudyingInteractorTest {
         return example.contains(question);
     }
 
-    private boolean inTestAnswers(String answer) {
+    private boolean inTestAnswers2(String answer) {
         ArrayList<String> example = new ArrayList<>();
         for (int i = 4; i < 6; i++) {
+            example.add(testAnswers[i]);
+        }
+        return example.contains(answer);
+    }
+
+    private boolean inTestQuestions1(String question) {
+        ArrayList<String> example = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            example.add(testQuestions[i]);
+        }
+        return example.contains(question);
+    }
+
+    private boolean inTestAnswers1(String answer) {
+        ArrayList<String> example = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
             example.add(testAnswers[i]);
         }
         return example.contains(answer);
