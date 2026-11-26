@@ -28,10 +28,6 @@ public class FlashcardStudyingInteractor implements FlashcardStudyingInputBounda
                 // check if in dao
                 try {
                     currentDeck = dao.loadDeck(inputData.getDeckTitle());
-                    Card currentCard = currentDeck.getCard();
-                    currentCard.setQuestionFacingUp();
-                    presenter.prepareSuccessView(new FlashcardStudyingOutputData(currentCard.getText()));
-                    return;
                 } catch (IllegalStateException e) {
                     presenter.prepareFailView("Invalid deck title");
                     return;
@@ -45,15 +41,19 @@ public class FlashcardStudyingInteractor implements FlashcardStudyingInputBounda
             Card currentCard = currentDeck.getCurrentCard();
             currentCard.flip();
             presenter.prepareSuccessView(new FlashcardStudyingOutputData(currentCard.getText()));
-        } else if (inputData.getButtonClicked().equals("Still learning")) {
-            Card currentCard = currentDeck.getCard();
-            currentCard.setQuestionFacingUp();
-            presenter.prepareSuccessView(new FlashcardStudyingOutputData(currentCard.getQuestion()));
+            return;
         } else if (inputData.getButtonClicked().equals("Knew it")) {
             currentDeck.removeCurrentCard();
-            Card currentCard = currentDeck.getCard();
+        }
+        // so, button is "Start", "Still learning" or "Knew it"
+        // try to get a new card
+        Card currentCard = currentDeck.getCard();
+        // if it's null, prepare fail view
+        if (currentCard == null) {
+            presenter.prepareFailView("All done!");
+        } else {
             currentCard.setQuestionFacingUp();
-            presenter.prepareSuccessView(new FlashcardStudyingOutputData(currentCard.getQuestion()));
+            presenter.prepareSuccessView(new FlashcardStudyingOutputData(currentCard.getText()));
         }
 
     }
