@@ -7,7 +7,7 @@ import entities.Game.Guess;
 import interface_adapters.candle_game.CandleGameViewModel;
 import interface_adapters.candle_game.CandleGameViewModelListener;
 import javax.swing.*;
-//import interface_adapters.candle_game.CandleGameController;
+import interface_adapters.candle_game.CandleGameController;
 import interface_adapters.candle_game.EvaluateGuessController;
 import interface_adapters.candle_game.EvaluateGuessPresenter;
 import use_case.use_case_EvaluateGuess.EvaluateGuessInteractor;
@@ -25,6 +25,7 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
     // TODO add home view model
     private final CandleGameViewModel candleGameViewModel;
     private final EvaluateGuessController controller;
+    private final CandleGameController candleGameController;
     private final CandleGame game;
 
     private final JLabel[][] attempts;
@@ -45,9 +46,10 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
      *
      * @param controller the Controller for CandleGame
      */
-    public CandleGameView(EvaluateGuessController controller, CandleGameViewModel candleGameViewModel, CandleGame game) {
+    public CandleGameView(EvaluateGuessController controller, CandleGameViewModel candleGameViewModel, CandleGameController candleGameController, CandleGame game) {
         this.controller = controller;
         this.candleGameViewModel = candleGameViewModel;
+        this.candleGameController = candleGameController;
         this.game = game;
         this.candleGameViewModel.addListener(this);
 
@@ -137,7 +139,7 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
         }
         else if (e.getSource() == quitButton) {
             if (controller != null){
-                controller.quitGame();
+                candleGameController.quitGame();
 
             }
             // Needs to bring back to home view but will implement later
@@ -243,8 +245,10 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
                     new EvaluateGuessInteractor(presenter);
             EvaluateGuessController controller =
                     new EvaluateGuessController(interactor);
+
+            CandleGameController candleGameController = null; // placeholder, will be changed
             CandleGameView view =
-                    new CandleGameView(controller, viewModel, game);
+                    new CandleGameView(controller, viewModel, candleGameController, game);
 
             JFrame frame = new JFrame("Light it Up!");
             frame.setContentPane(view);
