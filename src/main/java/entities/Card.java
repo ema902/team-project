@@ -34,4 +34,8 @@ public class Card {
     public boolean getQuestionFacingUp() {
         return questionFacingUp;
     }
+
+    public void setQuestionFacingUp() {
+        questionFacingUp = true;
+    }
 }

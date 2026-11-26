@@ -28,7 +28,7 @@ public class Deck {
 
     public Card getCard() {
         // if we've finished the deck, stop
-        if (studyingDeck == null) {
+        if (studying && studyingDeck.isEmpty()) {
             stopStudying();
             return null;
         }
@@ -66,4 +66,5 @@ public class Deck {
     public String getTitle(){return this.title;}
     public ArrayList<Card> getFlashcardDeck(){ return this.flashcardDeck;}
     public void setTitle(String title){ this.title = title;}
+    public boolean getStudying() { return studying;}
 }

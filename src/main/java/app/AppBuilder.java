@@ -156,6 +156,8 @@ public class AppBuilder {
         return this;
     }
 
+    // TODO add game view
+
     public AppBuilder addNavigationBar() {
         navigationBarViewModel = new NavigationBarViewModel();
         navigationBarPanel = new NavigationBarPanel(navigationBarViewModel);
