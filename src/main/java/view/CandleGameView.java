@@ -7,15 +7,12 @@ import entities.Game.Guess;
 import interface_adapters.candle_game.CandleGameViewModel;
 import interface_adapters.candle_game.CandleGameViewModelListener;
 import javax.swing.*;
-//import interface_adapters.candle_game.CandleGameController;
+import interface_adapters.candle_game.CandleGameController;
 import interface_adapters.candle_game.EvaluateGuessController;
 import interface_adapters.candle_game.EvaluateGuessPresenter;
 import use_case.use_case_EvaluateGuess.EvaluateGuessInteractor;
 import java.util.List;
-import java.io.File;
-import java.io.IOException;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +21,8 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
 
     // TODO add home view model
     private final CandleGameViewModel candleGameViewModel;
-    private final EvaluateGuessController controller;
+    private EvaluateGuessController evaluateGuessController;
+    private CandleGameController candleGameController;
     private final CandleGame game;
 
     private final JLabel[][] attempts;
@@ -43,11 +41,12 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
      * Constructs the Candle Game View
      * Initializes all it's components, and connects the View to the Controller
      *
-     * @param controller the Controller for CandleGame
+     * @param evaluateGuessController the Controller for CandleGame
      */
-    public CandleGameView(EvaluateGuessController controller, CandleGameViewModel candleGameViewModel, CandleGame game) {
-        this.controller = controller;
+    public CandleGameView(EvaluateGuessController evaluateGuessController, CandleGameViewModel candleGameViewModel, CandleGameController candleGameController, CandleGame game) {
+        this.evaluateGuessController = evaluateGuessController;
         this.candleGameViewModel = candleGameViewModel;
+        this.candleGameController = candleGameController;
         this.game = game;
         this.candleGameViewModel.addListener(this);
 
@@ -136,8 +135,8 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
             instructionsOpen();
         }
         else if (e.getSource() == quitButton) {
-            if (controller != null){
-                controller.quitGame();
+            if (evaluateGuessController != null){
+                candleGameController.quitGame();
 
             }
             // Needs to bring back to home view but will implement later
@@ -149,7 +148,7 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
                 guess.append(box.getText());
             }
             // Needs to keep submission
-            controller.execute(guess.toString(), game);
+            evaluateGuessController.execute(guess.toString(), game);
         }
     }
 
@@ -216,6 +215,15 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
 
     }
 
+    public void setEvaluateGuessController(EvaluateGuessController evaluateGuessController){
+        this.evaluateGuessController = evaluateGuessController;
+    }
+
+    public void setCandleGameController(CandleGameController candleGameController){
+        this.candleGameController = candleGameController;
+    }
+
+
 //    public static void main(String[] args) {
 //        JFrame frame = new JFrame("Light it Up!");
 //
@@ -243,8 +251,10 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
                     new EvaluateGuessInteractor(presenter);
             EvaluateGuessController controller =
                     new EvaluateGuessController(interactor);
+
+            CandleGameController candleGameController = null; // placeholder, will be changed
             CandleGameView view =
-                    new CandleGameView(controller, viewModel, game);
+                    new CandleGameView(controller, viewModel, candleGameController, game);
 
             JFrame frame = new JFrame("Light it Up!");
             frame.setContentPane(view);
