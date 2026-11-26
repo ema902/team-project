@@ -50,9 +50,9 @@ public class FlashcardStudyingInteractorTest {
             Deck deck1 = new Deck("deck1", exampleList1);
 
             ArrayList<Card> exampleList2 = new ArrayList<>();
-            for (int i = 4; i < 9; i++) {
+            for (int i = 4; i < 6; i++) {
                 Card c = new Card(testQuestions[i], testAnswers[i]);
-                exampleList1.add(c);
+                exampleList2.add(c);
             }
             Deck deck2 = new Deck("deck2", exampleList2);
             if (deckID.equals("deck1")) {
@@ -64,10 +64,25 @@ public class FlashcardStudyingInteractorTest {
         }
 
     }
-    // test for failure when user does not input a deck and there is no currentDeck
+    // test for failure on buttons other than start when user does not input a deck and there is no currentDeck
     @Test
-    public void emptyDeckTitleTest() {
+    public void wrongButtonNoDeckTest() {
         FlashcardStudyingInputData inputData = new FlashcardStudyingInputData("Flip");
+        FlashcardDataAccessInterface userRepository = new FakeDAO();
+        OutputRecorder recorder = new OutputRecorder();
+
+        FlashcardStudyingInteractor interactor = new FlashcardStudyingInteractor(recorder, userRepository);
+        interactor.execute(inputData);
+        assertNull(interactor.getCurrentDeck());
+        assertNotNull(recorder.failure);
+        assertEquals(recorder.failure, "You need to input a deck title");
+
+    }
+
+    // test for failure when user presses start button and doesn't enter a deck
+    @Test
+    public void startButtonNoDeckTest() {
+        FlashcardStudyingInputData inputData = new FlashcardStudyingInputData("Start");
         FlashcardDataAccessInterface userRepository = new FakeDAO();
         OutputRecorder recorder = new OutputRecorder();
 
@@ -81,7 +96,7 @@ public class FlashcardStudyingInteractorTest {
     // test for failure when you input a deck title and it's not in the DAO
     @Test
     public void notInDAO() {
-        FlashcardStudyingInputData inputData = new FlashcardStudyingInputData("Flip", "X");
+        FlashcardStudyingInputData inputData = new FlashcardStudyingInputData("Start", "X");
         FlashcardDataAccessInterface userRepository = new FakeDAO();
         OutputRecorder recorder = new OutputRecorder();
 
@@ -94,7 +109,7 @@ public class FlashcardStudyingInteractorTest {
     // test that current deck is correctly assigned when deck title is valid
     @Test
     public void inDAO() {
-        FlashcardStudyingInputData inputData = new FlashcardStudyingInputData("Start", "deck1");
+        FlashcardStudyingInputData inputData = new FlashcardStudyingInputData("Start", "deck2");
         FlashcardDataAccessInterface userRepository = new FakeDAO();
         OutputRecorder recorder = new OutputRecorder();
 
@@ -104,7 +119,7 @@ public class FlashcardStudyingInteractorTest {
         assertNotNull(recorder.success);
         assertTrue(inTestQuestions(recorder.success.getText()));
         // should assign a currentDeck to interactor
-        assertEquals(interactor.getCurrentDeck().getTitle(), "deck1");
+        assertEquals(interactor.getCurrentDeck().getTitle(), "deck2");
         assertTrue(interactor.getCurrentDeck().getStudying());
 
     }
@@ -113,21 +128,56 @@ public class FlashcardStudyingInteractorTest {
     // but when you call on the card again, it shows the answer side first
     @Test
     public void flipAndShowQuestionTest() {
+        FlashcardStudyingInputData inputData = new FlashcardStudyingInputData("Start", "deck2");
+        FlashcardDataAccessInterface userRepository = new FakeDAO();
+        OutputRecorder recorder = new OutputRecorder();
+
+        FlashcardStudyingInteractor interactor = new FlashcardStudyingInteractor(recorder, userRepository);
+        interactor.execute(inputData);
+        assertNotNull(recorder.success);
+        assertTrue(inTestQuestions(recorder.success.getText()));
+
+        FlashcardStudyingInputData inputData2 = new FlashcardStudyingInputData("Flip");
+        interactor.execute(inputData2);
+        assertNotNull(recorder.success);
+        assertTrue(inTestAnswers(recorder.success.getText()));
+        // get a new card
+        FlashcardStudyingInputData inputData3 = new FlashcardStudyingInputData("Still learning");
+        interactor.execute(inputData3);
+        // should return to old card
+        FlashcardStudyingInputData inputData4 = new FlashcardStudyingInputData("Still learning");
+        interactor.execute(inputData4);
+        assertNotNull(recorder.success);
+        assertTrue(inTestQuestions(recorder.success.getText()));
+
+    }
+
+    // test that "knew it" successfully reduces the size of the deck until 0
+    @Test
+    public void knewItUntilEmpty() {
         FlashcardStudyingInputData inputData = new FlashcardStudyingInputData("Start", "deck1");
         FlashcardDataAccessInterface userRepository = new FakeDAO();
         OutputRecorder recorder = new OutputRecorder();
 
         FlashcardStudyingInteractor interactor = new FlashcardStudyingInteractor(recorder, userRepository);
         interactor.execute(inputData);
-
-
+        assertNotNull(recorder.success);
+        assertTrue(inTestQuestions(recorder.success.getText()));
     }
 
     private boolean inTestQuestions(String question) {
         ArrayList<String> example = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 4; i < 6; i++) {
             example.add(testQuestions[i]);
         }
         return example.contains(question);
+    }
+
+    private boolean inTestAnswers(String answer) {
+        ArrayList<String> example = new ArrayList<>();
+        for (int i = 4; i < 6; i++) {
+            example.add(testAnswers[i]);
+        }
+        return example.contains(answer);
     }
 }
