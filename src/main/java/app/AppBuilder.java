@@ -7,6 +7,7 @@ import entities.TimerSessionFactory;
 import interface_adapters.ViewManagerModel;
 import interface_adapters.cancel_timer.CancelTimerController;
 import interface_adapters.cancel_timer.CancelTimerPresenter;
+import interface_adapters.candle_game.CandleGameViewModel;
 import interface_adapters.flashcard_generator.FlashcardGeneratorController;
 import interface_adapters.flashcard_generator.FlashcardGeneratorPresenter;
 import interface_adapters.flashcard_generator.FlashcardGeneratorViewModel;
@@ -76,6 +77,9 @@ public class AppBuilder {
 
     private FlashcardGeneratorView flashcardGeneratorView;
     private FlashcardGeneratorViewModel flashcardGeneratorViewModel;
+
+    private CandleGameView candleGameView;
+    private CandleGameViewModel candleGameViewModel;
 
 
     public AppBuilder() {

@@ -53,9 +53,6 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
 
         this.setLayout(null);
 
-        // TODO call
-//        FontManager.getWinkle(48f)
-
 
         //Attempts Remaining Tracker
         attemptsRemaining = new JLabel("10");
@@ -71,6 +68,8 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
         quitButton.setBackground(Color.decode("#362514"));
         quitButton.setForeground(Color.WHITE);
         quitButton.addActionListener(this);
+        quitButton.setOpaque(true);
+        quitButton.setBorderPainted(false);
         this.add(quitButton);
 
         // Instructions Button
@@ -80,6 +79,8 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
         instructionsButton.setBackground(Color.decode("#362514"));
         instructionsButton.setForeground(Color.WHITE);
         instructionsButton.addActionListener(this);
+        instructionsButton.setOpaque(true);
+        instructionsButton.setBorderPainted(false);
         this.add(instructionsButton);
 
         // Submit Button
@@ -89,6 +90,8 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
         submitButton.setBackground(Color.decode("#362514"));
         submitButton.setForeground(Color.WHITE);
         submitButton.addActionListener(this);
+        submitButton.setOpaque(true);
+        submitButton.setBorderPainted(false);
         this.add(submitButton);
 
         // Background
