@@ -16,7 +16,6 @@ public class Main {
                 .addTimerSettingsView()
                 .addHomeView()
                 .addFSView()
-                // TODO add game view
                 .addNavigationBar()
                 .addUpdateTimerSettingsUseCase()
                 .addOpenSettingsUseCase()
@@ -24,6 +23,7 @@ public class Main {
                 .addCancelTimerUseCase()
                 .addSwitchViewUseCase()
                 .addFlashcardGenerator()
+                .addFSUseCase()
                 .addFlashcardGeneratorUseCase()
                 .build();
 
