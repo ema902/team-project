@@ -66,7 +66,7 @@ public class TimerSettingsView extends JPanel implements TimerSettingsViewModelL
         focusSlider.setMajorTickSpacing(5);
         focusSlider.setPaintTicks(true);
         focusSlider.setPaintLabels(true);
-        focusSlider.setSnapToTicks(true);
+        focusSlider.setSnapToTicks(false); // TODO: Change
 
         focusSliderPanel.add(focusSliderLabel);
         focusSliderPanel.add(focusSlider);
@@ -89,7 +89,7 @@ public class TimerSettingsView extends JPanel implements TimerSettingsViewModelL
         breakSlider.setMajorTickSpacing(5);
         breakSlider.setPaintTicks(true);
         breakSlider.setPaintLabels(true);
-        breakSlider.setSnapToTicks(true);
+        breakSlider.setSnapToTicks(false); // TODO: Change
 
         breakSliderPanel.add(breakSliderLabel);
         breakSliderPanel.add(breakSlider);

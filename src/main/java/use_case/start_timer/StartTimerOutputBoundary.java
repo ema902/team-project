@@ -14,6 +14,8 @@ public interface StartTimerOutputBoundary {
 
     /**
      * Prepares the Start Timer View Model when the timer finishes running.
+     * @param finishedSessionType the type of session that has finished
+     * @param nextDuration the duration of the next session in minutes
      */
-    void prepareTimerFinishedView();
+    void prepareTimerFinishedView(String finishedSessionType, int nextDuration);
 }

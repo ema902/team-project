@@ -2,6 +2,7 @@ package interface_adapters.start_timer;
 
 import interface_adapters.home.HomeState;
 import interface_adapters.home.HomeViewModel;
+import interface_adapters.menu_bar.NavigationBarState;
 import interface_adapters.menu_bar.NavigationBarViewModel;
 import use_case.start_timer.StartTimerOutputBoundary;
 import use_case.start_timer.StartTimerOutputData;
@@ -30,7 +31,6 @@ public class StartTimerPresenter implements StartTimerOutputBoundary {
         String timerString = String.format("%02d:00", timerMinutes);
 
         state.setTimerDisplay(timerString);
-        state.setTotalSeconds(timerMinutes * 60);
         state.setTimerRunning(true);
 
         homeViewModel.setState(state);
@@ -56,14 +56,34 @@ public class StartTimerPresenter implements StartTimerOutputBoundary {
 
     /**
      * Prepares the Start Timer View Model when the timer finishes running.
+     * @param finishedTimerType the type of session that has finished
+     * @param nextDuration the duration of the next session in minutes
      */
     @Override
-    public void prepareTimerFinishedView() {
-        HomeState state = homeViewModel.getState();
-        state.setTimerRunning(false);
-        state.setTimerDisplay("00:00");
+    public void prepareTimerFinishedView(String finishedTimerType, int nextDuration) {
+        HomeState homeState = homeViewModel.getState();
+        String nextSession;
 
-        homeViewModel.setState(state);
+        // Determines the next session type based on the current session.
+        if (homeState.getSessionType().equals("focus")) {
+           nextSession = "break";
+        } else {
+            nextSession = "focus";
+        }
+
+        // Updates the Home State with the next session and its timer duration.
+        homeState.setSessionType(nextSession);
+        homeState.setTimerRunning(false);
+        homeState.setTimerDisplay(String.format("%02d:00", nextDuration));
+        homeViewModel.setState(homeState);
         homeViewModel.notifyStateChanged();
+
+        NavigationBarState navigationBarState = navigationBarViewModel.getState();
+        // Updates the Navigation Bar to reflect the next session and return to the Home View.
+        navigationBarState.setSessionType(nextSession);
+        navigationBarState.setCurrentViewName(HomeViewModel.VIEW_NAME);
+        navigationBarState.setTimerRunning(false);
+        navigationBarViewModel.setState(navigationBarState);
+        navigationBarViewModel.notifyStateChanged();
     }
 }

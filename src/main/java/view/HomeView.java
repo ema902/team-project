@@ -108,7 +108,7 @@ public class HomeView extends JPanel implements HomeViewModelListener {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startTimerController.execute("focus");
+                startTimerController.execute(viewModel.getState().getSessionType());
             }
         });
 
@@ -156,13 +156,22 @@ public class HomeView extends JPanel implements HomeViewModelListener {
     public void stateChanged() {
         String timerDisplay = viewModel.getState().getTimerDisplay();
         boolean isTimerRunning = viewModel.getState().isTimerRunning();
+        String sessionType = viewModel.getState().getSessionType();
 
         timerLabel.setText(timerDisplay);
 
-        // Enables start, adjust button, and the game menu item when timer isn't running
-        // Enables the cancel button when the timer is running
+        // Sets the text of the cancel button based on the session type.
+        if(sessionType.equals("break")) {
+            cancelButton.setText("End Break");
+        } else {
+            cancelButton.setText("Press to Cancel");
+        }
+
+        // Enables start button when the timer isn't running
         startButton.setVisible(!isTimerRunning);
-        adjustButton.setVisible(!isTimerRunning);
+        // Enables adjust button when the timer isn't running and the current session isn't a break.
+        adjustButton.setVisible(!isTimerRunning && !viewModel.getState().getSessionType().equals("break"));
+        // Enables the cancel button when the timer is running
         cancelButton.setVisible(isTimerRunning);
     }
 }

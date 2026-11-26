@@ -2,6 +2,7 @@ package interface_adapters.cancel_timer;
 
 import interface_adapters.home.HomeState;
 import interface_adapters.home.HomeViewModel;
+import interface_adapters.menu_bar.NavigationBarState;
 import interface_adapters.menu_bar.NavigationBarViewModel;
 import use_case.cancel_timer.CancelTimerOutputBoundary;
 
@@ -24,15 +25,20 @@ public class CancelTimerPresenter implements CancelTimerOutputBoundary {
      */
     @Override
     public void prepareSuccessView() {
-        HomeState state = homeViewModel.getState();
-        state.setTimerRunning(false);
-        state.setTimerDisplay("00:00");
-
-        homeViewModel.setState(state);
+        // Notifies the Home View Model that the timer has been cancelled.
+        HomeState homeState = homeViewModel.getState();
+        homeState.setTimerRunning(false);
+        homeState.setTimerDisplay("00:00");
+        // Resets the session type to "focus" regardless of if the timer is a break or focus timer.
+        homeState.setSessionType("focus");
+        homeViewModel.setState(homeState);
         homeViewModel.notifyStateChanged();
 
         // Notifies the Navigation Bar View Model that the timer has been cancelled.
-        navigationBarViewModel.getState().setTimerRunning(false);
+        NavigationBarState navigationBarState = navigationBarViewModel.getState();
+        navigationBarState.setTimerRunning(false);
+        navigationBarState.setSessionType("focus");
+        navigationBarViewModel.setState(navigationBarState);
         navigationBarViewModel.notifyStateChanged();
     }
 }
