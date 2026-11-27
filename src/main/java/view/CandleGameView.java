@@ -7,10 +7,13 @@ import entities.Game.Guess;
 import interface_adapters.candle_game.CandleGameViewModel;
 import interface_adapters.candle_game.CandleGameViewModelListener;
 import javax.swing.*;
-//import interface_adapters.candle_game.CandleGameController;
+import interface_adapters.candle_game.CandleGameController;
 import interface_adapters.candle_game.EvaluateGuessController;
 import interface_adapters.candle_game.EvaluateGuessPresenter;
 import use_case.use_case_EvaluateGuess.EvaluateGuessInteractor;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
@@ -104,10 +107,26 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
         // Number Boxes
         numberBoxes = new JTextField[5];
         for (int i = 0; i < numberBoxes.length; i++) {
+            final int currIndex = i;
             numberBoxes[i] = new JTextField();
             numberBoxes[i].setBounds(70 + (i * 150), 370, 60, 30);
             numberBoxes[i].setFont(FontManager.getWinkle(30f));
             numberBoxes[i].setHorizontalAlignment(JTextField.CENTER);
+            numberBoxes[i].addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyTyped(KeyEvent e) {
+                    char digit = e.getKeyChar();
+                    if (!Character.isDigit(digit) || (!numberBoxes[currIndex].getText().isEmpty())){
+                        e.consume();
+                    }
+                }
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    if (numberBoxes[currIndex].getText().isEmpty() && currIndex<numberBoxes.length-1) {
+                        numberBoxes[currIndex+1].requestFocusInWindow();
+                    }
+                }
+            });
             this.add(numberBoxes[i]);
         }
 
