@@ -11,14 +11,8 @@ import interface_adapters.candle_game.CandleGameController;
 import interface_adapters.candle_game.EvaluateGuessController;
 import interface_adapters.candle_game.EvaluateGuessPresenter;
 import use_case.use_case_EvaluateGuess.EvaluateGuessInteractor;
-
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.List;
-import java.io.File;
-import java.io.IOException;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +21,8 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
 
     // TODO add home view model
     private final CandleGameViewModel candleGameViewModel;
-    private final EvaluateGuessController controller;
+    private EvaluateGuessController evaluateGuessController;
+    private CandleGameController candleGameController;
     private final CandleGame game;
 
     private final JLabel[][] attempts;
@@ -46,15 +41,19 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
      * Constructs the Candle Game View
      * Initializes all it's components, and connects the View to the Controller
      *
-     * @param controller the Controller for CandleGame
+     * @param evaluateGuessController the Controller for CandleGame
      */
-    public CandleGameView(EvaluateGuessController controller, CandleGameViewModel candleGameViewModel, CandleGame game) {
-        this.controller = controller;
+    public CandleGameView(EvaluateGuessController evaluateGuessController, CandleGameViewModel candleGameViewModel, CandleGameController candleGameController, CandleGame game) {
+        this.evaluateGuessController = evaluateGuessController;
         this.candleGameViewModel = candleGameViewModel;
+        this.candleGameController = candleGameController;
         this.game = game;
         this.candleGameViewModel.addListener(this);
 
         this.setLayout(null);
+
+        // TODO call
+//        FontManager.getWinkle(48f)
 
 
         //Attempts Remaining Tracker
@@ -71,8 +70,6 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
         quitButton.setBackground(Color.decode("#362514"));
         quitButton.setForeground(Color.WHITE);
         quitButton.addActionListener(this);
-        quitButton.setOpaque(true);
-        quitButton.setBorderPainted(false);
         this.add(quitButton);
 
         // Instructions Button
@@ -82,8 +79,6 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
         instructionsButton.setBackground(Color.decode("#362514"));
         instructionsButton.setForeground(Color.WHITE);
         instructionsButton.addActionListener(this);
-        instructionsButton.setOpaque(true);
-        instructionsButton.setBorderPainted(false);
         this.add(instructionsButton);
 
         // Submit Button
@@ -93,8 +88,6 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
         submitButton.setBackground(Color.decode("#362514"));
         submitButton.setForeground(Color.WHITE);
         submitButton.addActionListener(this);
-        submitButton.setOpaque(true);
-        submitButton.setBorderPainted(false);
         this.add(submitButton);
 
         // Background
@@ -107,26 +100,10 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
         // Number Boxes
         numberBoxes = new JTextField[5];
         for (int i = 0; i < numberBoxes.length; i++) {
-            final int currIndex = i;
             numberBoxes[i] = new JTextField();
             numberBoxes[i].setBounds(70 + (i * 150), 370, 60, 30);
             numberBoxes[i].setFont(FontManager.getWinkle(30f));
             numberBoxes[i].setHorizontalAlignment(JTextField.CENTER);
-            numberBoxes[i].addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyTyped(KeyEvent e) {
-                    char digit = e.getKeyChar();
-                    if (!Character.isDigit(digit) || (!numberBoxes[currIndex].getText().isEmpty())){
-                        e.consume();
-                    }
-                }
-                @Override
-                public void keyReleased(KeyEvent e) {
-                    if (numberBoxes[currIndex].getText().isEmpty() && currIndex<numberBoxes.length-1) {
-                        numberBoxes[currIndex+1].requestFocusInWindow();
-                    }
-                }
-            });
             this.add(numberBoxes[i]);
         }
 
@@ -158,8 +135,8 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
             instructionsOpen();
         }
         else if (e.getSource() == quitButton) {
-            if (controller != null){
-                controller.quitGame();
+            if (evaluateGuessController != null){
+                candleGameController.quitGame();
 
             }
             // Needs to bring back to home view but will implement later
@@ -171,7 +148,7 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
                 guess.append(box.getText());
             }
             // Needs to keep submission
-            controller.execute(guess.toString(), game);
+            evaluateGuessController.execute(guess.toString(), game);
         }
     }
 
@@ -238,6 +215,15 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
 
     }
 
+    public void setEvaluateGuessController(EvaluateGuessController evaluateGuessController){
+        this.evaluateGuessController = evaluateGuessController;
+    }
+
+    public void setCandleGameController(CandleGameController candleGameController){
+        this.candleGameController = candleGameController;
+    }
+
+
 //    public static void main(String[] args) {
 //        JFrame frame = new JFrame("Light it Up!");
 //
@@ -265,8 +251,10 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
                     new EvaluateGuessInteractor(presenter);
             EvaluateGuessController controller =
                     new EvaluateGuessController(interactor);
+
+            CandleGameController candleGameController = null; // placeholder, will be changed
             CandleGameView view =
-                    new CandleGameView(controller, viewModel, game);
+                    new CandleGameView(controller, viewModel, candleGameController, game);
 
             JFrame frame = new JFrame("Light it Up!");
             frame.setContentPane(view);
