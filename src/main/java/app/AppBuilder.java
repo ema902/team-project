@@ -3,10 +3,15 @@ package app;
 import data_access.FlashcardDAO;
 import data_access.FlashcardDataAccessInterface;
 import data_access.InMemoryTimerDataAccess;
+import entities.Game.CandleGameSession;
 import entities.TimerSessionFactory;
 import interface_adapters.ViewManagerModel;
 import interface_adapters.cancel_timer.CancelTimerController;
 import interface_adapters.cancel_timer.CancelTimerPresenter;
+import interface_adapters.candle_game.CandleGameController;
+import interface_adapters.candle_game.CandleGamePresenter;
+import interface_adapters.candle_game.EvaluateGuessController;
+import interface_adapters.candle_game.EvaluateGuessPresenter;
 import interface_adapters.flashcard_generator.FlashcardGeneratorController;
 import interface_adapters.flashcard_generator.FlashcardGeneratorPresenter;
 import interface_adapters.flashcard_generator.FlashcardGeneratorViewModel;
@@ -24,6 +29,8 @@ import interface_adapters.start_timer.StartTimerPresenter;
 import interface_adapters.update_timer_settings.UpdateTimerSettingsController;
 import interface_adapters.update_timer_settings.UpdateTimerSettingsPresenter;
 import interface_adapters.update_timer_settings.TimerSettingsViewModel;
+import use_case.CandleGame.CandleGameInputBoundary;
+import use_case.CandleGame.CandleGameOutputBoundary;
 import use_case.cancel_timer.CancelTimerInputBoundary;
 import use_case.cancel_timer.CancelTimerInteractor;
 import use_case.cancel_timer.CancelTimerOutputBoundary;
@@ -33,6 +40,10 @@ import use_case.flashcard_generator.FlashcardGeneratorOutputBoundary;
 import use_case.flashcard_studying.FlashcardStudyingInputBoundary;
 import use_case.flashcard_studying.FlashcardStudyingInteractor;
 import use_case.flashcard_studying.FlashcardStudyingOutputBoundary;
+import use_case.CandleGame.CandleGameInteractor;
+import use_case.use_case_EvaluateGuess.EvaluateGuessInputBoundary;
+import use_case.use_case_EvaluateGuess.EvaluateGuessOutputBoundary;
+import use_case.use_case_EvaluateGuess.EvaluateGuessInteractor;
 import use_case.menu_bar.SwitchViewInputBoundary;
 import use_case.menu_bar.SwitchViewInteractor;
 import use_case.menu_bar.SwitchViewOutputBoundary;
@@ -45,7 +56,10 @@ import use_case.start_timer.StartTimerOutputBoundary;
 import use_case.update_timer_settings.UpdateTimerSettingsInputBoundary;
 import use_case.update_timer_settings.UpdateTimerSettingsInteractor;
 import use_case.update_timer_settings.UpdateTimerSettingsOutputBoundary;
+import use_case.use_case_EvaluateGuess.EvaluateGuessOutputBoundary;
 import view.*;
+import data_access.RandomSecretCodeGen;
+import interface_adapters.candle_game.CandleGameViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,6 +91,10 @@ public class AppBuilder {
     private FlashcardGeneratorView flashcardGeneratorView;
     private FlashcardGeneratorViewModel flashcardGeneratorViewModel;
 
+    private StringBuilder secretCode;
+    private CandleGameViewModel candleGameViewModel;
+    private CandleGameView candleGameView;
+    final CandleGameSession candleGameSession = new CandleGameSession();
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -117,6 +135,17 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Game View to the application.
+     * @return this builder
+     */
+    public AppBuilder addGameView() {
+        candleGameViewModel = new CandleGameViewModel();
+        candleGameView = new CandleGameView(candleGameViewModel, homeViewModel);
+        cardPanel.add(candleGameView, ViewNames.GAME);
+        return this;
+    }
+
+    /**
      * Adds flashcard studying use case to AppBuilder
      * @return
      */
@@ -138,8 +167,6 @@ public class AppBuilder {
 
         return this;
     }
-
-    // TODO add game view
 
     public AppBuilder addNavigationBar() {
         navigationBarViewModel = new NavigationBarViewModel();
@@ -250,6 +277,32 @@ public class AppBuilder {
         // Set Controller for View
         flashcardGeneratorView.setController(controller);
 
+
+        return this;
+    }
+
+    /**
+     * Adds the Candle Game use case to the application.
+     * @return this builder
+     */
+    public AppBuilder addGameUseCase() {
+
+        final CandleGameOutputBoundary candleGamePresenter = new CandleGamePresenter(); //candleGameViewModel
+        final CandleGameInputBoundary candleGameInteractor =
+                new CandleGameInteractor(candleGameSession, new RandomSecretCodeGen(), candleGamePresenter);
+
+
+        final EvaluateGuessOutputBoundary evaluateGuessOutputPresenter =
+                new EvaluateGuessPresenter(candleGameViewModel);
+
+        final EvaluateGuessInputBoundary evaluateGuessInteractor =
+                new EvaluateGuessInteractor(evaluateGuessOutputPresenter, candleGameSession);
+
+        CandleGameController candleGameController = new CandleGameController(candleGameInteractor);
+        EvaluateGuessController evaluateGuessController = new EvaluateGuessController(evaluateGuessInteractor);
+
+        candleGameView.setCandleGameController(candleGameController);
+        candleGameView.setEvaluateGuessController(evaluateGuessController);
 
         return this;
     }

@@ -9,8 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 
 
 /**
@@ -29,7 +27,7 @@ public class TimerSettingsView extends JPanel implements TimerSettingsViewModelL
         // Main panel containing all the settings components.
         JPanel settingsPanel = new JPanel();
         settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
-        settingsPanel.setBackground(Color.WHITE);
+        settingsPanel.setBackground(new Color(209, 191, 169));
         settingsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 0, 20));
 
         // Heading section containing the title and subtitle.
@@ -37,59 +35,52 @@ public class TimerSettingsView extends JPanel implements TimerSettingsViewModelL
         headingPanel.setLayout(new BoxLayout(headingPanel, BoxLayout.Y_AXIS));
         headingPanel.setPreferredSize(new Dimension(425, 80));
         headingPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        headingPanel.setBackground(new Color(209, 191, 169));
 
         JLabel headingLabel = new JLabel("Your study rhythm");
         headingLabel.setFont(FontManager.getAppleGaramondBold(40f));
+        headingLabel.setForeground(new Color(59, 38, 24));
         headingLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel subheadingLabel = new JLabel("Find a pace that feels like you.");
         subheadingLabel.setFont(FontManager.getAppleGaramondItalic(20f));
+        subheadingLabel.setForeground(new Color(82, 58, 40));
         subheadingLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         headingPanel.add(headingLabel);
         headingPanel.add(subheadingLabel);
-        headingPanel.setBackground(Color.WHITE);
 
         // Focus slider and its label.
         JLabel focusSliderLabel = new JLabel("Focus Duration");
         focusSliderLabel.setFont(FontManager.getAppleGaramond(22f));
+        focusSliderLabel.setForeground(new Color(59, 38, 24));
         focusSliderLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JPanel focusSliderPanel = new JPanel();
         focusSliderPanel.setLayout(new BoxLayout(focusSliderPanel, BoxLayout.Y_AXIS));
         focusSliderPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        focusSliderPanel.setBackground(new Color(209, 191, 169));
 
-        JSlider focusSlider = new JSlider(0, 60, 25);
-        focusSlider.setAlignmentX(Component.LEFT_ALIGNMENT);
-        focusSlider.setPreferredSize(new Dimension(390, 50));
-        focusSlider.setFont(FontManager.getWinkle(20f));
-        focusSlider.setMajorTickSpacing(5);
-        focusSlider.setPaintTicks(true);
-        focusSlider.setPaintLabels(true);
-        focusSlider.setSnapToTicks(false); // TODO: Change
+
+        JSlider focusSlider = createStyledSlider(0, 60, 25);
 
         focusSliderPanel.add(focusSliderLabel);
         focusSliderPanel.add(focusSlider);
-        focusSliderPanel.setBackground(Color.WHITE);
+        focusSliderPanel.setBackground(new Color(209, 191, 169));
 
         // Break slider and its label.
         JLabel breakSliderLabel = new JLabel("Break Duration");
         breakSliderLabel.setFont(FontManager.getAppleGaramond(22f));
         breakSliderLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        breakSliderLabel.setForeground(new Color(59, 38, 24));
 
         JPanel breakSliderPanel = new JPanel();
         breakSliderPanel.setLayout(new BoxLayout(breakSliderPanel, BoxLayout.Y_AXIS));
         breakSliderPanel.setBackground(Color.WHITE);
         breakSliderPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        breakSliderPanel.setBackground(new Color(209, 191, 169));
 
-        JSlider breakSlider = new JSlider(0, 60, 5);
-        breakSlider.setAlignmentX(Component.LEFT_ALIGNMENT);
-        breakSlider.setPreferredSize(new Dimension(390, 50));
-        breakSlider.setFont(FontManager.getWinkle(20f));
-        breakSlider.setMajorTickSpacing(5);
-        breakSlider.setPaintTicks(true);
-        breakSlider.setPaintLabels(true);
-        breakSlider.setSnapToTicks(false); // TODO: Change
+        JSlider breakSlider = createStyledSlider(0, 60, 5);
 
         breakSliderPanel.add(breakSliderLabel);
         breakSliderPanel.add(breakSlider);
@@ -98,12 +89,12 @@ public class TimerSettingsView extends JPanel implements TimerSettingsViewModelL
         savePanel.setLayout(new BoxLayout(savePanel, BoxLayout.Y_AXIS));
         savePanel.setPreferredSize(new Dimension(400, 30));
         savePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        savePanel.setBackground(Color.WHITE);
+        savePanel.setBackground(new Color(209, 191, 169));
 
-        JButton saveButton = new JButton("Save");
+        JButton saveButton = new CustomButton("Save");
+        saveButton.setFont(FontManager.getAppleGaramond(20f));
         saveButton.setPreferredSize(new Dimension(100, 45));
         saveButton.setMaximumSize(new Dimension(100, 45));
-        saveButton.setFont(FontManager.getAppleGaramond(20f));
         saveButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Passes the focus and break durations to the Update Timer Settings controller when the user clicks Save.
@@ -163,6 +154,21 @@ public class TimerSettingsView extends JPanel implements TimerSettingsViewModelL
     public void showWindow() {
         settingsFrame.setLocationRelativeTo(null);
         settingsFrame.setVisible(true);
+    }
+
+    public JSlider createStyledSlider(int min, int max, int value) {
+        JSlider slider = new JSlider(min, max, value);
+        slider.setAlignmentX(Component.LEFT_ALIGNMENT);
+        slider.setPreferredSize(new Dimension(390, 50));
+        slider.setFont(FontManager.getWinkle(20f));
+        slider.setBackground(new Color(209, 191, 169));
+        slider.setForeground(new Color(59, 38, 24));
+        slider.setMajorTickSpacing(5);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.setSnapToTicks(false); // TODO: Change later
+        slider.setUI(new CustomSlider(slider));
+        return slider;
     }
 
 }

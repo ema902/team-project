@@ -23,7 +23,7 @@ public class Guess {
      *
      * @return the feedback list .
      */
-    public List<CandleType> generateFeedback(String secretCode) {
+    private List<CandleType> generateFeedback(String secretCode) {
         List<CandleType> feedback = new ArrayList<>();
         for (int i = 0; i < getGuessedCode().length(); i++ ) {
             char digit = getGuessedCode().charAt(i);
@@ -56,6 +56,6 @@ public class Guess {
      * @return the feedback list.
      */
     public List<CandleType> getFeedback() {
-        return feedback;
+        return List.copyOf(feedback);
     }
 }
