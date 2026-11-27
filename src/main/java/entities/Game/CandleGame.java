@@ -77,7 +77,7 @@ public class CandleGame {
         updateGameCondition();
     }
 
-    public void updateGameCondition() {
+    private void updateGameCondition() {
         Guess recentGuess = guesses.get(guesses.size()-1);
         List<CandleType> feedback = recentGuess.getFeedback();
         boolean isCorrect = true;

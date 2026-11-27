@@ -1,14 +1,10 @@
 package use_case.use_case_EvaluateGuess;
 
-import entities.Game.CandleGame;
-
 public class EvaluateGuessInputData {
     private String guess;
-    private CandleGame game;
 
-    public EvaluateGuessInputData(String guess, CandleGame game) {
+    public EvaluateGuessInputData(String guess) {
         this.guess = guess;
-        this.game = game;
     }
 
     /**
@@ -17,14 +13,6 @@ public class EvaluateGuessInputData {
      */
     public String getGuess() {
         return guess;
-    }
-
-    /**
-     * Returns the game playing.
-     * @return the game playing .
-     */
-    public CandleGame getGame() {
-        return game;
     }
 
 }

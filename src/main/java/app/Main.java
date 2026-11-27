@@ -16,6 +16,7 @@ public class Main {
                 .addTimerSettingsView()
                 .addHomeView()
                 .addFSView()
+                .addGameView()
                 .addNavigationBar()
                 .addUpdateTimerSettingsUseCase()
                 .addOpenSettingsUseCase()
@@ -25,6 +26,7 @@ public class Main {
                 .addFlashcardGenerator()
                 .addFSUseCase()
                 .addFlashcardGeneratorUseCase()
+                .addGameUseCase()
                 .build();
 
         application.setLocationRelativeTo(null);

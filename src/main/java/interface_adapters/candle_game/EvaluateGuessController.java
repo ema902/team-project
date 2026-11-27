@@ -10,8 +10,8 @@ public class EvaluateGuessController {
     public EvaluateGuessController(EvaluateGuessInputBoundary inputBoundary) {
         this.inputBoundary = inputBoundary;
     }
-    public void execute (String guess, CandleGame game) {
-        EvaluateGuessInputData inputData = new EvaluateGuessInputData(guess, game);
+    public void execute (String guess) {
+        EvaluateGuessInputData inputData = new EvaluateGuessInputData(guess);
         inputBoundary.execute(inputData);
     }
 }
