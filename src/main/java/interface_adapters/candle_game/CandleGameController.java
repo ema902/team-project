@@ -1,6 +1,5 @@
 package interface_adapters.candle_game;
 
-import use_case.use_case_EvaluateGuess.EvaluateGuessInputBoundary;
 import use_case.CandleGame.CandleGameInputBoundary;
 
 

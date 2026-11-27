@@ -3,6 +3,7 @@ package app;
 import data_access.FlashcardDAO;
 import data_access.FlashcardDataAccessInterface;
 import data_access.InMemoryTimerDataAccess;
+import entities.Game.CandleGameSession;
 import entities.TimerSessionFactory;
 import interface_adapters.ViewManagerModel;
 import interface_adapters.cancel_timer.CancelTimerController;
@@ -93,7 +94,7 @@ public class AppBuilder {
     private StringBuilder secretCode;
     private CandleGameViewModel candleGameViewModel;
     private CandleGameView candleGameView;
-
+    final CandleGameSession candleGameSession = new CandleGameSession();
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -134,6 +135,17 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Game View to the application.
+     * @return this builder
+     */
+    public AppBuilder addGameView() {
+        candleGameViewModel = new CandleGameViewModel();
+        candleGameView = new CandleGameView(candleGameViewModel, homeViewModel);
+        cardPanel.add(candleGameView, ViewNames.GAME);
+        return this;
+    }
+
+    /**
      * Adds flashcard studying use case to AppBuilder
      * @return
      */
@@ -155,8 +167,6 @@ public class AppBuilder {
 
         return this;
     }
-
-    // TODO add game view
 
     public AppBuilder addNavigationBar() {
         navigationBarViewModel = new NavigationBarViewModel();
@@ -279,13 +289,14 @@ public class AppBuilder {
 
         final CandleGameOutputBoundary candleGamePresenter = new CandleGamePresenter(); //candleGameViewModel
         final CandleGameInputBoundary candleGameInteractor =
-                new CandleGameInteractor(new RandomSecretCodeGen(), candleGamePresenter);
+                new CandleGameInteractor(candleGameSession, new RandomSecretCodeGen(), candleGamePresenter);
 
 
         final EvaluateGuessOutputBoundary evaluateGuessOutputPresenter =
                 new EvaluateGuessPresenter(candleGameViewModel);
+
         final EvaluateGuessInputBoundary evaluateGuessInteractor =
-                new EvaluateGuessInteractor(evaluateGuessOutputPresenter);
+                new EvaluateGuessInteractor(evaluateGuessOutputPresenter, candleGameSession);
 
         CandleGameController candleGameController = new CandleGameController(candleGameInteractor);
         EvaluateGuessController evaluateGuessController = new EvaluateGuessController(evaluateGuessInteractor);

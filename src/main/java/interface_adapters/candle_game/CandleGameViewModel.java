@@ -1,37 +1,41 @@
 package interface_adapters.candle_game;
 
-import entities.Game.CandleType;
-import entities.Game.GameCondition;
-import entities.Game.Guess;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The ViewModel for the Signup View.
+ * The ViewModel for the Candle Game View.
  */
 
 public class CandleGameViewModel {
 
-    private List<CandleType> candleFeedback;
+    private List<String> candleFeedback;
     private int attemptsRemaining;
-    private GameCondition gameCondition;
-    private List<Guess> pastGuesses;
+    private String gameCondition;
+    private List<List<String>> pastGuesses;
+    private List<List<String>> pastFeedback;
     private final List<CandleGameViewModelListener> listeners = new ArrayList<>();
 
-    public List<CandleType> getCandleFeedback() {
+    public List<String> getCandleFeedback() {
         return candleFeedback;
     }
 
-    public void setCandleFeedback(List<CandleType> candleFeedback) {
+    public void setCandleFeedback(List<String> candleFeedback) {
         this.candleFeedback = candleFeedback;
     }
 
-    public List<Guess> getPastGuesses() {
+    public List<List<String>> getPastGuesses() {
         return pastGuesses;
     }
-    public void setPastGuesses(List<Guess> pastGuesses) {
+    public void setPastGuesses(List<List<String>> pastGuesses) {
         this.pastGuesses = pastGuesses;
+    }
+
+    public List<List<String>> getPastFeedback() {
+        return pastFeedback;
+    }
+    public void setPastFeedback(List<List<String>> pastFeedback) {
+        this.pastFeedback = pastFeedback;
     }
 
     public int getAttemptsRemaining(){
@@ -41,11 +45,11 @@ public class CandleGameViewModel {
         this.attemptsRemaining = attemptsRemaining;
     }
 
-    public GameCondition getGameCondition() {
+    public String getGameCondition() {
         return gameCondition;
     }
 
-    public void setGameCondition(GameCondition gameCondition) {
+    public void setGameCondition(String gameCondition) {
         this.gameCondition = gameCondition;
     }
 

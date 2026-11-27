@@ -1,33 +1,34 @@
 package use_case.use_case_EvaluateGuess;
 
-import entities.Game.CandleType;
-import entities.Game.GameCondition;
-import entities.Game.Guess;
-
 import java.util.List;
 
 public class EvaluateGuessOutputData {
-    private List<CandleType> feedback;
+    private List<String> feedback;
     private int attemptsRemaining;
-    private GameCondition gameCondition;
-    private List<Guess> pastGuesses;
+    private String gameCondition;
+    private List<List<String>> pastGuesses;
+    private List<List<String>> pastFeedback;
 
-    public EvaluateGuessOutputData(List<CandleType> feedback, int attemptsRemaining, GameCondition gameCondition, List<Guess> pastGuesses) {
+    public EvaluateGuessOutputData(List<String> feedback, int attemptsRemaining, String gameCondition, List<List<String>> pastGuesses, List<List<String>> pastFeedback) {
         this.feedback = feedback;
         this.attemptsRemaining = attemptsRemaining;
         this.gameCondition = gameCondition;
         this.pastGuesses = pastGuesses;
+        this.pastFeedback = pastFeedback;
     }
-    public List<CandleType> getFeedback() {
+    public List<String> getFeedback() {
         return feedback;
     }
     public int getAttemptsRemaining() {
         return attemptsRemaining;
     }
-    public GameCondition getGameCondition() {
+    public String getGameCondition() {
         return gameCondition;
     }
-    public List<Guess> getPastGuesses() {
+    public List<List<String>> getPastGuesses() {
         return pastGuesses;
+    }
+    public List<List<String>> getPastFeedback() {
+        return pastFeedback;
     }
 }
