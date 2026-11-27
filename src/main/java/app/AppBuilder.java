@@ -263,7 +263,7 @@ public class AppBuilder {
         // Initialize presenter and DAO
         final FlashcardGeneratorOutputBoundary presenter = new FlashcardGeneratorPresenter(
                 flashcardGeneratorViewModel
-                ,viewManagerModel,
+                ,viewManagerModel, navigationBarViewModel,
                 flashcardStudyingViewModel);
 
         FlashcardDataAccessInterface DAO = new FlashcardDAO();
