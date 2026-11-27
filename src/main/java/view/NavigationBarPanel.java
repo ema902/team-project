@@ -30,11 +30,11 @@ public class NavigationBarPanel extends JPanel implements NavigationBarViewModel
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.setPreferredSize(new Dimension(800, 44));
         this.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
-        this.setBackground(Color.WHITE);
 
         // Create the label displaying the title of the current page.
         pageTitleLabel = new JLabel("Focus"); // Starts off on the Focus Home Page
         pageTitleLabel.setFont(FontManager.getAppleGaramond(24f));
+        pageTitleLabel.setForeground(new Color(59, 38, 24));
         pageTitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Build the popup menu containing the available navigation options.
@@ -78,10 +78,10 @@ public class NavigationBarPanel extends JPanel implements NavigationBarViewModel
      */
     private JPopupMenu buildNavigationPopup() {
         JPopupMenu popup = new JPopupMenu();
-        popup.setBackground(Color.WHITE);
+        popup.setBackground(new Color(249, 239, 230));
         popup.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(220, 220, 220), 1),
-                BorderFactory.createEmptyBorder(10, 15, 10, 15)
+                BorderFactory.createLineBorder(new Color(194, 122, 86), 2),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
 
         // Create a menu item for each application view.
@@ -107,7 +107,8 @@ public class NavigationBarPanel extends JPanel implements NavigationBarViewModel
     private JMenuItem buildMenuItem(String title, String viewName) {
         JMenuItem item = new JMenuItem(title);
         item.setFont(FontManager.getGinny(30f));
-        item.setBackground(Color.WHITE);
+        item.setForeground(new Color(59, 38, 24));
+        item.setBackground(new Color(249, 239, 230));
         item.setOpaque(true);
         item.setBorder(BorderFactory.createEmptyBorder(0, 10, 8, 40));
 
@@ -132,6 +133,7 @@ public class NavigationBarPanel extends JPanel implements NavigationBarViewModel
         // Update the page title based on the currently displayed view.
         switch(currentView) {
             case ViewNames.HOME:
+                this.setBackground(new Color(200, 174, 149));
                 // Displays the current session type when the Home View is active.
                 if (sessionType.equals("focus")) {
                     pageTitleLabel.setText("Focus");
@@ -140,9 +142,11 @@ public class NavigationBarPanel extends JPanel implements NavigationBarViewModel
                 }
                 break;
             case ViewNames.MAKE_FLASHCARDS:
+                this.setBackground(new Color(206, 178, 146));
                 pageTitleLabel.setText("Make Flashcards");
                 break;
             case ViewNames.STUDY_FLASHCARDS:
+                this.setBackground(new Color(206, 178, 146));
                 pageTitleLabel.setText("Study Flashcards");
                 break;
             case ViewNames.GAME:
