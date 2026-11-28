@@ -25,10 +25,12 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
     private final JLabel attemptsRemaining;
     private final JLabel background;
     private final JLabel[] candleFlames;
+    private final JLabel message;
     private final JTextField[] numberBoxes;
     private final ImageIcon brightCandle = new ImageIcon("src/images/ORANGE_FLAME.png");
     private final ImageIcon dimCandle = new ImageIcon("src/images/RED_FLAME.png");
-
+    private final ImageIcon winMessage = new ImageIcon("src/images/WIN_MESSAGE.PNG");
+    private final ImageIcon lossMessage = new ImageIcon("src/images/END_MESSAGE.PNG");
     private final JButton quitButton;
     private final JButton instructionsButton;
     private final JButton submitButton;
@@ -43,9 +45,6 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
         this.candleGameViewModel.addListener(this);
 
         this.setLayout(null);
-
-        // TODO call
-//        FontManager.getWinkle(48f)
 
 
         //Attempts Remaining Tracker
@@ -106,7 +105,7 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
                 @Override
                 public void keyTyped(KeyEvent e) {
                     char digit = e.getKeyChar();
-                    if (!Character.isDigit(digit) || numberBoxes[currentIndex].getText().length()>=1){
+                    if (!Character.isDigit(digit) || !numberBoxes[currentIndex].getText().isEmpty()){
                         e.consume();
                     }
 
@@ -167,10 +166,15 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
 
         // Adds the timer to the view
         TimerDisplayPanel timerPanel = new TimerDisplayPanel(homeViewModel);
-        timerPanel.setBounds(300, 0, 225, 85);
+        timerPanel.setBounds(285, 0, 225, 85);
         this.add(timerPanel);
         this.setComponentZOrder(background, this.getComponentCount() - 1);
 
+        // Initialize the message when you win or lose the game
+        message = new JLabel();
+        message.setBounds(20, 30, 700, 500);
+        this.add(message);
+        this.setComponentZOrder(background, this.getComponentCount() - 1);
 
     }
 
@@ -202,15 +206,59 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
         JFrame instructionsFrame = new JFrame("Instructions for Light it Up!");
         instructionsFrame.setMinimumSize(new java.awt.Dimension(400, 300));
 
-        JLabel instructionsTitle = new JLabel("How to Play Light it Up");
-        JLabel instructions = new JLabel("These are where the instructions will go");
-        instructionsTitle.setFont(FontManager.getWinkle(20f));
-        instructions.setFont(FontManager.getWinkle(10f));
-        instructionsTitle.setBounds(100, 10, 200, 20);
-        instructions.setBounds(10, 0, 100, 20);
+        JLabel instructionsTitle = new JLabel("How to Play Light it Up", JLabel.CENTER);
 
-        instructionsFrame.add(instructionsTitle);
-        instructionsFrame.add(instructions);
+        instructionsFrame.setLayout(new BorderLayout(10, 10));
+        instructionsTitle.setFont(FontManager.getWinkle(20f));
+        instructionsTitle.setForeground(new Color(74, 50, 35));
+        instructionsTitle.setBackground(new Color(90, 27, 27));
+        instructionsTitle.setBounds(100, 10, 200, 20);
+        instructionsTitle.setBorder(
+                BorderFactory.createEmptyBorder(15, 10, 10, 10));
+
+
+        JTextArea instructions = new JTextArea(
+                "GOAL\n" +
+                        "   - You have 10 attempts to guess a 5 digit code on each candle.\n" +
+                        "   - If you can guess the code in 10 attempts, you win the game. \n" +
+                        "   - If you can not guess the code in 10 attempts or the timer ends, you lose the game. \n" +
+                        "\n"+
+
+                "Secret Code\n" +
+                        "   - The code is 5 digits from 0-9. \n" +
+                        "   - More than 2 of the same numbers are possible.\n " +
+                        "       - Examples: 11111, 11222, 11345. \n" +
+                        "\n"+
+
+                "Submitting a Guess \n" +
+                        "   - You can either click each label on the candle and type in a digit, which are numbers from 0-9 ~.\n"+
+                        "       - Once you type a digit in, it automatically moves to the next box. \n" +
+                        "   - You can press the backspace key on the label to delete a digit. \n" +
+                        "   - Click the SUBMIT button to submit a guess\n" +
+                        "\n"+
+
+                "Other information\n" +
+                        "   - Previous guesses appear on the right side of the screen\n" +
+                        "   - The colour of each digit corresponds to the candle feedback\n" +
+                        "   - Your attempts are displayed beside the ? in the game window\n" +
+                        "   - Click ? button to view the instructions again\n" +
+                        "   - Click the navigation bar to return to other windows."
+        );
+
+        instructions.setFont(FontManager.getWinkle(20f));
+        instructions.setEditable(false);
+        instructions.setLineWrap(true);
+        instructions.setWrapStyleWord(true);
+        instructions.setBackground(new Color(218, 172, 99));
+        instructions.setForeground(new Color(54, 37, 20));
+        instructions.setBorder(
+                BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        JScrollPane scrollPane = new JScrollPane(instructions);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        instructionsFrame.add(instructionsTitle, BorderLayout.NORTH);
+        instructionsFrame.add(scrollPane, BorderLayout.CENTER);
+
         instructionsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         instructionsFrame.setLocationRelativeTo(this);
         instructionsFrame.setVisible(true);
@@ -221,6 +269,7 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
         updateCandles(candleGameViewModel.getCandleFeedback());
         attemptsRemaining.setText(String.valueOf(candleGameViewModel.getAttemptsRemaining()));
         printPastGuesses(candleGameViewModel.getPastGuesses(), candleGameViewModel.getPastFeedback());
+        updateGameCondition(candleGameViewModel.getGameCondition());
     }
 
     private void updateCandles(List<String> feedback) {
@@ -253,6 +302,24 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
         }
     }
 
+    private void updateGameCondition(String gameCondition) {
+        if (gameCondition.equals("WON")) {
+            message.setIcon(winMessage);
+            // Handles removing button after condition is reached
+            submitButton.setEnabled(false);
+            submitButton.setVisible(false);
+        }
+        else if (gameCondition.equals("LOSS")) {
+            message.setIcon(lossMessage);
+            // Handles removing button after condition is reached
+            submitButton.setEnabled(false);
+            submitButton.setVisible(false);
+        }
+        else {
+            message.setIcon(null);
+            submitButton.setEnabled(true);
+        }
+    }
 
     public void setEvaluateGuessController(EvaluateGuessController evaluateGuessController) {
         this.evaluateGuessController = evaluateGuessController;
@@ -263,46 +330,3 @@ public class CandleGameView extends JPanel implements ActionListener, CandleGame
     }
 }
 
-
-
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame("Light it Up!");
-//
-//        CandleGameView view = new CandleGameView(null, null, null);
-//
-//        frame.setContentPane(view);
-//        frame.setSize(800, 600);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(true);
-//    }
-
-//    public static void main(String[] args) {
-//        FontManager.loadFonts();
-//        SwingUtilities.invokeLater(() -> {
-//
-//            // Temporary game for testing 12345
-//            // Temporary game 69875
-//            CandleGame game = new CandleGame("69875", 10);
-//
-//            CandleGameViewModel viewModel = new CandleGameViewModel();
-//            EvaluateGuessPresenter presenter =
-//                    new EvaluateGuessPresenter(viewModel);
-//            EvaluateGuessInteractor interactor =
-//                    new EvaluateGuessInteractor(presenter);
-//            EvaluateGuessController controller =
-//                    new EvaluateGuessController(interactor);
-//
-//            CandleGameController candleGameController = null; // placeholder, will be changed
-//            CandleGameView view =
-//                    new CandleGameView(controller, viewModel, candleGameController, game);
-//
-//            JFrame frame = new JFrame("Light it Up!");
-//            frame.setContentPane(view);
-//            frame.setSize(800, 600);
-//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            frame.setLocationRelativeTo(null);
-//            frame.setVisible(true);
-//        });}
-
-//}
