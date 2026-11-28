@@ -251,7 +251,6 @@ Main Success Scenario:
 | Ava | Use Case 6 |
 | Miray | Use Case 7|
 | Sophia | Use Case 8|
---
 
 ## Entities
 ### Entity 1 - Session
