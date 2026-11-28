@@ -37,7 +37,10 @@ at the end of the term.
 As a student, I want to generate flashcards in a timely manner so that I could study for my classes 
 
 ### User Story 2 - Grace:
-As a student, I want to start a focus timer so that I can study without any distractions 
+As a student, I want to start a pomodoro timer so that I can study without distractions and take a break in between.
+As a student, I want to adjust my focus and break timer durations so that my study sessions match my preferred pace.
+As a student, I want to cancel an active focus session or end a break early so that I can reset the timer if my plans change.
+As a student, I want to switch between different screens in the app so that I can study during my focus session, and play a game during my break.
 
 ### User Story 3 - Ava:
 As a student, I want to start a break timer so that I can take periodic breaks after studying. 
@@ -51,6 +54,32 @@ As a student, I want to review my flashcards so I can remember the material.
 
 ## Use Cases
 ### Use Case 1
+Name: Start Timer
+
+Primary Actor: Student 
+
+Preconditions: 
+- There is no focus or break timer currently running 
+- The user is on the home screen 
+
+Trigger: Clicking the “Start” button on the home screen
+
+Success Outcome: The focus timer counts down to 0 and transitions to the break screen. The student can then start the break timer, which switches to the home screen when the timer finishes. 
+
+Main Success Scenario:
+1. The student clicks the “Start” button on the focus screen.
+2. The system gets the student’s preferred focus and break duration from their settings. 
+3. The system hides the start and adjust options, shows the cancel button, and begins counting down the focus time.
+4. The system continuously updates the timer display with the remaining time.
+5. When the focus timer finishes, the system switches to the break screen and displays the “Start” button.
+6. The student clicks the “Start” button to begin the break.
+7. The system hides the start button, shows the “End Break” button, and counts down the break time.
+8. When the break timer finishes, the system returns to the focus home screen and makes the start and adjust options available again.
+
+Extensions:
+3a / 7a. The student decides to stop the session early.
+- The Cancel Timer use case is triggered.
+
 ### Use Case 2 
 Name: Generating flashcards
 
@@ -145,7 +174,7 @@ Main Success Scenario:
 | Ema | Use Case 2 |
 | Ava | Use Case 3 |
 | Miray | Use Case 4|
-| Sohia | Use Case 5|
+| Sophia | Use Case 5|
 --
 
 ## Entities
