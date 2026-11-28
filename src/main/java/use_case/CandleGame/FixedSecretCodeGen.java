@@ -1,5 +1,7 @@
-package use_case.SecretCodeGenerator;
+package use_case.CandleGame;
 
+
+import use_case.SecretCodeGenerator.SecretCodeGenerator;
 
 public class FixedSecretCodeGen implements SecretCodeGenerator {
     private final String secretCode;
