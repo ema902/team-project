@@ -33,23 +33,29 @@ at the end of the term.
 
 ## User Stories (For each group member):
 
-### User Story 1 - Ema:
-As a student, I want to generate flashcards in a timely manner so that I could study for my classes 
+### User Story 1 - Grace:
+As a student, I want to start a pomodoro timer so that I can study without distractions and take a break in between.
 
 ### User Story 2 - Grace:
-As a student, I want to start a pomodoro timer so that I can study without distractions and take a break in between.
 As a student, I want to adjust my focus and break timer durations so that my study sessions match my preferred pace.
+
+### User Story 3 - Grace:
 As a student, I want to cancel an active focus session or end a break early so that I can reset the timer if my plans change.
+
+### User Story 4 - Grace:
 As a student, I want to switch between different screens in the app so that I can study during my focus session, and play a game during my break.
 
-### User Story 3 - Ava:
+### User Story 5 - Ema:
+As a student, I want to generate flashcards in a timely manner so that I could study for my classes 
+
+### User Story 6 - Ava:
 As a student, I want to start a break timer so that I can take periodic breaks after studying. 
 As a student playing the break game, I want to receive feedback on my submitted code so that I figure out the secret code. 
 
-### User Story 4 - Miray:
+### User Story 7 - Miray:
 As a student, I want to play a game during my break so that I can wind down and relax after my study session. 
 
-### User Story 5 - Sophia:
+### User Story 8 - Sophia:
 As a student, I want to review my flashcards so I can remember the material. 
 
 ## Use Cases
@@ -80,7 +86,73 @@ Extensions:
 3a / 7a. The student decides to stop the session early.
 - The Cancel Timer use case is triggered.
 
-### Use Case 2 
+### Use Case 2
+Name: Adjust Timer Settings
+
+Primary Actor: Student 
+
+Preconditions: 
+- There is no focus or break timer currently running 
+- The student is on the home screen
+  
+Trigger: Clicking the “Adjust” button on the home screen
+
+Success Outcome: The focus and break durations are updated and saved. The settings window closes, and the home screen displays the saved focus duration.
+
+Main Success Scenario:
+1. The student clicks the “Adjust” button on the home screen.
+2. The system opens the timer settings popup window with sliders for setting the focus duration and the break duration.
+3. The student adjusts the focus and break sliders.
+4. The student clicks the “Save” button.
+5. The system validates and saves both durations.
+6. The system closes the settings window and updates the timer display on the home screen. 
+
+Extensions:
+3a. The student closes the settings window without clicking the “Save” button.
+- The system discards any unsaved changes and keeps the previous timer durations
+
+5a. The selected focus or break duration is invalid (i.e. set to 0 minutes).
+- The system displays an error message on the screen.
+- The settings window remains open without saving, and the use case returns to step 3.
+
+### Use Case 3 
+Name: Cancel Current Timer
+
+Primary Actor: Student 
+
+Preconditions: 
+- A focus or break timer is currently running 
+- The student is on the home screen
+  
+Trigger: Clicking “Press to Cancel” during a focus session or “End Break” during a break session.
+
+Success Outcome: The running timer stops, and the screen resets to its idle state. 
+
+Main Success Scenario:
+1. The student clicks the cancel button. 
+2. The system stops the timer countdown. 
+3. The system resets the timer display.
+4. The system hides the cancel option and displays the “Start” button again.
+
+### Use Case 4
+Name: Navigate Application Views
+
+Primary Actor: Student 
+
+Preconditions: 
+- The application is open and the navigation menu icon is visible in the top-left corner
+
+Trigger: Clicking the navigation menu icon and choosing a screen.
+
+Success Outcome: The app switches from the current screen to the selected screen. 
+
+Main Success Scenario:
+1. The student clicks the menu bar icon.
+2. The system displays the list of available screens.
+3. The student selects a screen to navigate to.
+4. The system closes the menu and displays the selected screen.
+
+### Use Case 5 
 Name: Generating flashcards
 
 Primary Actor: Student
@@ -101,7 +173,7 @@ Extensions:
 If user enters no text, message will prompt them to enter text first 
 Success outcome: Student can generate flashcards successfully
 
-### Use Case 3 
+### Use Case 6
 Name: Evaluate Guess and Generate Feedback 
 
 Primary Actor: Student
@@ -129,8 +201,9 @@ Extensions: Student guesses the secret code correctly
 
 Student's guess is invalid 
 1. The system detects that the guess has invalid characters.
-2. The submit button is disabled until a valid guess is detected. 
-### Use Case 4 
+2. The submit button is disabled until a valid guess is detected.
+   
+### Use Case 7
 Name: Start the Candle Game 
 
 Primary Actor: Student
@@ -148,18 +221,21 @@ Main Success Scenario:
 4. The system opens the game window showing the candles, Break Timer, and the tries left.
 
 Extensions:
-
 - If Break Timer is not active then the program does not let users access the game.
 - If Student clicks the quit button, program marks Game Condition as “QUIT” and student returns to the focus page
 - If Student clicks the instructions button, the program shows instructions in a pop up screen.
 - If Break Timer runs out before the end of the game, student gets back to the focus page 
 
-### Use Case 5  Studying flashcards
-Primary Actor: Student 
-Preconditions: Flashcards are generated properly 
-Trigger: Clicking the “Knew it” or “Still Learning” button 
-Main Success Scenario:
+### Use Case 8  
+Name: Studying flashcards
 
+Primary Actor: Student 
+
+Preconditions: Flashcards are generated properly 
+
+Trigger: Clicking the “Knew it” or “Still Learning” button 
+
+Main Success Scenario:
 1. Student is on the flashcard page after flashcards are generated
 2. Student clicks “Knew It” or “Still Learning” button
 3. If “Knew It” pressed, removes flashcard from deck and if “Still Learning” is pressed, then moves flashcard to the back of the deck
@@ -170,15 +246,17 @@ Main Success Scenario:
 ## Minimal Viable Product (MVP)
 | Team Member | MVP Use Case |
 |-------------|--------------|
-| Grace | Use Case 1 |
-| Ema | Use Case 2 |
-| Ava | Use Case 3 |
-| Miray | Use Case 4|
-| Sophia | Use Case 5|
+| Grace | Use Case 1-4 |
+| Ema | Use Case 5 |
+| Ava | Use Case 6 |
+| Miray | Use Case 7|
+| Sophia | Use Case 8|
 --
 
 ## Entities
-### Entity 1
+### Entity 1 - Session
+<img width="589" height="503" alt="Screenshot 2026-11-28 at 1 28 29 PM" src="https://github.com/user-attachments/assets/e21287b3-3135-4f5d-af8f-ad1d90101652" />
+
 ### Entity 2
 (Add additional entities as needed.)
 ---
