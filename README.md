@@ -269,7 +269,8 @@ Main Success Scenario:
 ### Sequence Diagrams
 ---
 ## How to Run
-[Instructions for running the program.]
+1. Open the Main.java file.
+2. Run the program and follow the on-screen instructions.
 ---
 ## Notes
 [Any additional project information.]
